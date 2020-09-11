@@ -8,6 +8,12 @@ function ToDo ()
 
     const [newTask, setNewTask] = useState( 'default' );
 
+    const [toDos, setToDos] = useState( [ 
+        { task: "Buy milk" },
+        { task: "Learn Reacy" },
+        { task: "Find out what Redux is" }
+    ].map( ( toDo, index ) => <li key={index}>{toDo.task}</li> ) );
+
 
 
     return (
@@ -16,12 +22,12 @@ function ToDo ()
                 <label htmlFor="task">New Task:</label>
                 <input type="text" id="task" onChange={e => { setNewTask( e.target.value ) } } value={newTask} />
                 <p>
-                    <strong>Current Task Value:</strong>
+                    <strong>Current Task Value: </strong>
                     <em>{newTask}</em>
                 </p>
                 <input type="submit" value="Add To-Do" />
             </form>
-            <ul></ul>
+            <ul>{toDos}</ul>
         </>
     );
 
