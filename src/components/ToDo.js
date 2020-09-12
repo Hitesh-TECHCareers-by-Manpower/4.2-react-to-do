@@ -1,48 +1,73 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function ToDo() {
-    //  const [num1, num2] = [1,2];
-    // console.log( num1 );
-    //console.log( num2 );
+// Component function.
+function ToDo ()
+{
+  /*
+    // Assignment deconstructor (Array.)
+    const [num1, num2] = [1, 2];
+    console.log( num1 );
+    console.log( num2 );
+  */
 
-    const [newTask, setNewTask] = useState('default');
+  /**
+   * Set up for state.
+   * First item is a variable that holds the state value.
+   * Second item is a function that we use to update the state value.
+   * !!! IMPORTANT: We never update the first item DIRECTLY EVER.
+   */
+  const [newTask, setNewTask] = useState( 'default' ); // Argument in "useState()" is the default value for this state.
 
-    const [toDos, setToDos] = useState([
-        { id: uuidv4(), task: "Buy milk" },
-        { id: uuidv4(), task: "Learn Reacy" },
-        { id: uuidv4(), task: "Find out what Redux is" }
-    ]);
+  // Set up state for our to-do list items.
+  const [toDos, setToDos] = useState( [ // Default list of to-dos.
+    { id: uuidv4(), task: "Buy milk" },
+    { id: uuidv4(), task: "Learn React" },
+    { id: uuidv4(), task: "Find out what Redux is" }
+  ] );
 
-    const addNewTask = event => {
-        event.preventDefault();
+  // Function we can use for our "onSubmit" form event.
+  const addNewTask = event => {
+    // Don't let the page reload for the submission! Let's prevent that default action.
+    event.preventDefault();
 
-        const newToDosList = [...toDos];
-        newToDosList.push({ id: uuidv4(), task: newTask });
+    // We can use the spread operator to break up an array, so that...
+    // each item inside is treated as an argument (value separated by
+    // comma, if we were to write it manually.)
+    const newToDosList = [...toDos]; // Fresh array with the same values from our state.
+    // !!! REMEMBER, WE NEVER UPDATE THE STATE VARIABLE DIRECTLY.
 
-        setToDos(newToDosList);
+    // We can add our NEW task to the new array.
+    // *Make sure it matches our format! We're using an object here to match...
+    //  our previous "To-Do" items.
+    newToDosList.push( { id: uuidv4(), task: newTask } ); // "newTask" is our input state value!
 
-        setNewTask('');
+    // Update the "toDos" state value.
+    setToDos( newToDosList ); // What we pass in will replace the old state value!
 
-    }
+    // Clear the new task field, now that our ToDo is added.
+    setNewTask( '' ); // Set it to blank after submission so the user doesn't have to erase!
+  }
 
-
-
-    return (
-        <>
-            <form onSubmit={addNewTask}>
-                <label htmlFor="task">New Task:</label>
-                <input type="text" id="task" onChange={e => { setNewTask(e.target.value) }} value={newTask} />
-                <p>
-                    <strong>Current Task Value: </strong>
-                    <em>{newTask}</em>
-                </p>
-                <input type="submit" value="Add To-Do" />
-            </form>
-            <ul>{toDos.map( toDo => <li key={toDo.id}>{toDo.task}</li>)}</ul>
-        </>
-    );
-
+  // We use "return" for our render, in a component.
+  return (
+    <>
+      <form onSubmit={addNewTask}>
+        <label htmlFor="task">New Task:</label>
+        <input
+          type="text"
+          id="task"
+          onChange={e => { setNewTask( e.target.value ) }}
+          value={newTask} />
+        <p>
+          <strong>Current Task Value: </strong>
+          <em>{newTask}</em>
+        </p>
+        <input type="submit" value="Add To-Do" />
+      </form>
+      <ul>{toDos.map( toDo => <li key={toDo.id}>{toDo.task}</li> )}</ul>
+    </>
+  );
 }
 
 export default ToDo;
